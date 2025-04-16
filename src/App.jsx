@@ -8,6 +8,8 @@ import ChatMessage from "./components/ChatMessage"
 
 const App = () => {
   const [chatHistory , setChatHistory] = useState([])
+  const [showChatbot , setshowChatbot] = useState(false)
+
 
   const chatBodyRef = useRef()
 
@@ -38,11 +40,21 @@ const App = () => {
 
   //automatically scrolling when too many msgs
   useEffect(()=>{
-    chatHistory.current.scrollTo({top:chatBodyRef.current.scrollHeight,behaviour:"smooth"})
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTo({
+        top: chatBodyRef.current.scrollHeight,
+        behavior: "smooth",
+      })
+    }
   },[chatHistory])
 
   return (
-    <div className="container">
+    <div className={`container ${showChatbot ? "show-chatbot" : ""}`}>
+      <button onClick={()=>setshowChatbot(prev=> !prev)} 
+      id="chatbot-toggler">
+        <span className="material-symbols-rounded">mode_comment</span>
+        <span className="material-symbols.rounded">close</span>
+      </button>
       <div className="chatbot-popup">
         <div className="chat-header">
           <div className="header-info">
