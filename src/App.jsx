@@ -9,7 +9,13 @@ import ChatMessage from "./components/ChatMessage"
 const App = () => {
   const [chatHistory , setChatHistory] = useState([])
   const generateBotResponse = async (history) => {
+
+    const updateHistory = (text) =>{
+      setChatHistory(prev => [...prev.filter(msg => msg.text !== "thinking....."),{role:"model",text}])
+    }
+
     history = history.map(({role,text})=>({role,parts:[{text}]}))
+    
     const requestOptions={
       method : "POST",
       headers : { "Content-Type":"application/json"},
@@ -20,7 +26,8 @@ const App = () => {
       const data = await response.json()
       if(!response.ok) throw new Error(data.error.message || "something went wrong")
       
-      console.log(data)
+      const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g,"$1").trim()
+      updateHistory(apiResponseText)
     }catch(error){
       console.log(error)
     }
