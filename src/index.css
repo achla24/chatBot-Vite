@@ -36,10 +36,16 @@ body{
   color: #fff;
 }
 
+.container.show-chatbot #chatbot-toggler{
+  transform: rotate(90deg);
+}
+
 .chatbot-popup{
   position: fixed;
   opacity:0 ;
   pointer-events: none;
+  transform: scale(0.2);
+  transform-origin: bottom right;
   bottom: 90px;
   right: 35px;
   background: #fff;
@@ -47,11 +53,13 @@ body{
   overflow: hidden;
   border-radius: 15px;
   box-shadow: 0 0 128px 0 rgb(148, 146, 146),0 32px 64px -48px black;
+  transition: all 0.1s ease;
 }
 
 .container.show-chatbot .chatbot-popup{
   opacity: 1;
   pointer-events: auto;
+  transform: scale(1);
 }
 
 .chatbot-popup .chat-header{
