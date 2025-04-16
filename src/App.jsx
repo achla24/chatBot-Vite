@@ -1,5 +1,5 @@
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import ChatBotIcon from "./components/ChatBotIcon"
 import ChatForm from "./components/ChatForm"
 import ChatMessage from "./components/ChatMessage"
@@ -8,6 +8,9 @@ import ChatMessage from "./components/ChatMessage"
 
 const App = () => {
   const [chatHistory , setChatHistory] = useState([])
+
+  const chatBodyRef = useRef()
+
   const generateBotResponse = async (history) => {
 
     const updateHistory = (text) =>{
@@ -25,13 +28,19 @@ const App = () => {
       const response = await fetch(import.meta.env.VITE_API_URL, requestOptions)
       const data = await response.json()
       if(!response.ok) throw new Error(data.error.message || "something went wrong")
-      
+      console.log(data)
       const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g,"$1").trim()
       updateHistory(apiResponseText)
     }catch(error){
       console.log(error)
     }
   }
+
+  //automatically scrolling when too many msgs
+  useEffect(()=>{
+    chatHistory.current.scrollTo({top:chatBodyRef.current.scrollHeight,behaviour:"smooth"})
+  },[chatHistory])
+
   return (
     <div className="container">
       <div className="chatbot-popup">
@@ -45,7 +54,7 @@ const App = () => {
 
 
 
-        <div className="chat-body">
+        <div ref={chatBodyRef} className="chat-body">
           <div className="message bot-message">
           <ChatBotIcon />
           <p className="message-text">
