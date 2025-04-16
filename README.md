@@ -3,6 +3,7 @@ A chatbot built with React + Vite
 
 ---
 
+
 ## About This Project
 
 This project uses React with the Vite build tool to create a fast and responsive chatbot interface.
